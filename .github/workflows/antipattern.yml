@@ -1,0 +1,38 @@
+name: Run Antipattern Detection
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  run-detection:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout This Repository
+        uses: actions/checkout@v4
+
+      - name: Clone Target Repository
+        run: |
+          git clone https://github.com/example-user/example-repo.git repos/example-repo
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Detection on Cloned Repo
+        run: python scripts/run_all.py repos/example-repo
+
+      - name: Upload Results (Optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: detection-results
+          
+
