@@ -5,7 +5,7 @@ on:
     branches:
       - main
   pull_request:
-  workflow_dispatch:  # Allows manual execution
+  workflow_dispatch:
 
 jobs:
   run-detection:
@@ -26,13 +26,15 @@ jobs:
       - name: Ensure repos Directory Exists
         run: mkdir -p repos
 
-      - name: Run Detection on All Repositories
-        run: python scripts/run_all.py  # No need to manually clone, script handles it
+      - name: Set PYTHONPATH to include detection directory
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/detection" >> $GITHUB_ENV
 
-      # ✅ Always upload misuses_report.xlsx even if the job fails
+      - name: Run Detection on All Repositories
+        run: python scripts/run_all.py  
+
       - name: Upload Misuse Report
-        if: always()  # Ensures execution even if previous steps fail
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: misuses-report
-          path: misuses_report.xlsx  # Adjust this if the file is stored elsewhere
+          path: misuses_report.xlsx
