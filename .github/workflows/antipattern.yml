@@ -32,7 +32,7 @@ jobs:
       # ✅ Always upload misuses_report.xlsx even if the job fails
       - name: Upload Misuse Report
         if: always()  # Ensures execution even if previous steps fail
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: misuses-report
           path: misuses_report.xlsx  # Adjust this if the file is stored elsewhere
