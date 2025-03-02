@@ -15,10 +15,6 @@ jobs:
       - name: Checkout This Repository
         uses: actions/checkout@v4
 
-      - name: Clone Target Repository
-        run: |
-          git clone https://github.com/example-user/example-repo.git repos/example-repo
-
       - name: Set Up Python
         uses: actions/setup-python@v4
         with:
@@ -27,12 +23,16 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Detection on Cloned Repo
-        run: python scripts/run_all.py repos/example-repo
+      - name: Ensure repos Directory Exists
+        run: mkdir -p repos
 
-      - name: Upload Results (Optional)
+      - name: Run Detection on All Repositories
+        run: python scripts/run_all.py  # No need to manually clone, script handles it
+
+      # ✅ Always upload misuses_report.xlsx even if the job fails
+      - name: Upload Misuse Report
+        if: always()  # Ensures execution even if previous steps fail
         uses: actions/upload-artifact@v3
         with:
-          name: detection-results
-          
-
+          name: misuses-report
+          path: misuses_report.xlsx  # Adjust this if the file is stored elsewhere
