@@ -41,7 +41,7 @@ CLONE_DIR = "repos"  # Directory to store cloned repos
 
 def clone_repo(repo_url):
     """Clone a repository from GitHub into the repos directory."""
-    repo_name = repo_url.strip().split("/")[-1].replace(".git", "")  # Extract repo name
+    repo_name = repo_url.rstrip("/").split("/")[-1].replace(".git", "")  # Ensure no trailing slash, remove .git if present
     repo_path = os.path.join(CLONE_DIR, repo_name)
 
     if os.path.exists(repo_path):

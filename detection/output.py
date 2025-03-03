@@ -10,22 +10,22 @@ def process_repos(repo_paths, detection_function, save_to_excel=True, file_name=
     :param file_name: Name of the Excel file if saving results.
     :return: List of results for each repository.
     """
-    #from detection_Not_using_batch_API import generate_combined_ast_for_repo
+    from detection_Not_using_batch_API import generate_combined_ast_for_repo
 
     all_repo_misuses = []
-
+    print(repo_paths)
     for repo_path in repo_paths:
         print(f"Processing repository: {repo_path}")
+        print(repo_path)
         tree = generate_ast_for_repo(repo_path)  # Generic AST generation
-        """"
+       
         if detection_function.__name__ == "detect_function_calls":
-            #combined_tree = generate_combined_ast_for_repo(repo_path)
+            combined_tree = generate_combined_ast_for_repo(repo_path)
             trees = generate_asts_for_repo(repo_path)  # Corrected here
-            #result = detection_function(trees, combined_tree) # Call detect_function_calls with repo_path
+            result = detection_function(trees, combined_tree) # Call detect_function_calls with repo_path
             
         else:
-        """
-        result = detection_function(tree)  # Call detection function with AST tree
+            result = detection_function(tree)  # Call detection function with AST tree
             
         # Ensure result is in dictionary format
         if isinstance(result, dict):
