@@ -56,6 +56,7 @@ def clone_repo(repo_url):
 
     return repo_path
 
+
 def run_detections(repo_path):
     """Run all detection scripts on the given repo."""
     detection_files = [f for f in os.listdir(DETECTION_DIR) if f.startswith("detection_") and f.endswith(".py")]
