@@ -33,12 +33,14 @@ import sys
 import pandas as pd
 import git
 import time
+import shutil
+import stat
 
-DETECTION_DIR = os.path.join(os.path.dirname(__file__), "../detection")  
+DETECTION_DIR = os.path.join(os.path.dirname(__file__), r"../detection")  
 sys.path.append(os.path.abspath(DETECTION_DIR))  
 
-EXCEL_FILE = "repos_data.xlsx"  # Path to your Excel file
-CLONE_DIR = "repos"  # Directory to store cloned repos
+EXCEL_FILE = r"repos_data.xlsx"  # Path to your Excel file
+CLONE_DIR =  r"repos"   # Directory to store cloned repos
 
 def clone_repo(repo_url):
     """Clone a repository from GitHub into the repos directory."""
@@ -57,10 +59,20 @@ def clone_repo(repo_url):
 
     return repo_path
 
-import time
-import pandas as pd
+def remove_readonly(func, path, _):
+    """Clear the read-only flag and retry deletion."""
+    os.chmod(path, stat.S_IWRITE)  # Change file permission to writable
+    func(path)  # Retry deletion
 
+def delete_repo(repo_path):
+    """Force delete the cloned repository, handling locked files."""
+    try:
+        shutil.rmtree(repo_path, onexc=remove_readonly)  # Force remove
+        print(f"Deleted repository: {repo_path}")
+    except Exception as e:
+        print(f"Failed to delete {repo_path}: {e}")
 
+        
 def save_results_to_excel(results, file_name):
     """Save detection execution times and misuses to an Excel file."""
     df = pd.DataFrame(results)
@@ -119,6 +131,24 @@ def run_detections(repo_path):
 
     return total_detection_time
 
+if __name__ == "__main__":
+    # Load repository URLs from Excel
+    df = pd.read_excel(EXCEL_FILE)
+    if "repo" not in df.columns:
+        print("Error: Excel file must contain a column named 'repo'")
+        sys.exit(1)
+
+    os.makedirs(CLONE_DIR, exist_ok=True)  # Ensure repos folder exists
+
+    for repo_url in df["repo"].dropna():
+        repo_path = clone_repo(repo_url)
+        if repo_path:
+            run_detections(repo_path)
+            print(f"Deleting repo: {repo_path}")  # Debugging
+            delete_repo(repo_path)
+
+
+
 """""
 def run_detections(repo_path):
     Run all detection scripts on the given repo.
@@ -143,16 +173,3 @@ def run_detections(repo_path):
     print(f"Total execution time for all detection scripts on {repo_path}: {total_detection_time:.4f} seconds\n")
     return total_detection_time  # Return total execution time for repo
 """""
-if __name__ == "__main__":
-    # Load repository URLs from Excel
-    df = pd.read_excel(EXCEL_FILE)
-    if "repo" not in df.columns:
-        print("Error: Excel file must contain a column named 'repo'")
-        sys.exit(1)
-
-    os.makedirs(CLONE_DIR, exist_ok=True)  # Ensure repos folder exists
-
-    for repo_url in df["repo"].dropna():
-        repo_path = clone_repo(repo_url)
-        if repo_path:
-            run_detections(repo_path)

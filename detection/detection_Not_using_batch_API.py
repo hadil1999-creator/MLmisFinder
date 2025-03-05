@@ -128,7 +128,7 @@ def analyze_function_calls_in_repo(trees):
     all_misuses = set()  # Store all misuses
 
     for file_path, tree in trees:
-        print(f"Processing file: {file_path} (AST type: {type(tree)})")  # Debug: Check the type of AST being processed
+        #print(f"Processing file: {file_path} (AST type: {type(tree)})")  # Debug: Check the type of AST being processed
         visitor = FunctionCallVisitor(file_path, tree)  # Pass single tree
         visitor.visit(tree)
         total_misuse_count += visitor.call_count

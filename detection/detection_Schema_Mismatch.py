@@ -254,22 +254,23 @@ def analyze_code(tree):
                 print(f"{cloud_provider} validation tool is not imported. Misuse detected.")
 
                 # Step 3: Output Schema Test Result
-                print("\nSchema Test Analysis:")
+                final_result = []
+
                 for node in [n for n in tree.body if isinstance(n, ast.FunctionDef)]:
-                    if not visitor.is_empty_or_trivial(node):
+                    if not schema_test_identifier.is_empty_or_trivial(node):
                         # Proceed with schema check analysis for non-trivial functions
-                        print(f"\nAnalyzing function: {node.name}")
-                        if visitor.schema_checks:
-                            print("Schema checks found:")
-                            for check in visitor.schema_checks:
-                                print(ast.dump(check))
+                        result = f"\nAnalyzing function: {node.name}"
+                        if schema_test_identifier.schema_checks:
+                            result += "\nSchema checks found:"
+                            for check in schema_test_identifier.schema_checks:
+                                result += f"\n{ast.dump(check)}"
                             schema_check_found = True
-
                         else:
-                            print("No schema checks found.")
-
+                            result += "\nNo schema checks found."
                     else:
-                        print(f"Function {node.name} is trivial or empty. No testing schema")
+                        result = f"\nFunction {node.name} is trivial or empty. No testing schema"
+
+                    final_result.append(result)                 
 
                 if not schema_check_found and not provider_keyword_check_found:
                     misuse_count += 1

@@ -63,7 +63,7 @@ def check_data_drift(tree):
     checker = ImportChecker()
     checker.visit(tree)
     imported_modules = checker.imports
-    print("Imported modules:", imported_modules)
+    #print("Imported modules:", imported_modules)
 
     at_least_one_used = False
     misuse_count = 0

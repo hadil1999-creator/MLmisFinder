@@ -42,7 +42,7 @@ jobs:
         with:
           name: misuses-report
           path: misuses_report.xlsx
-      - name: Upload Misuse Report
+      - name: Time and Misuse Report
         if: always()
         uses: actions/upload-artifact@v4
         with:

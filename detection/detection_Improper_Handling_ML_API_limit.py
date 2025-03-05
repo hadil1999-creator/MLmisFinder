@@ -120,7 +120,7 @@ def is_monitoring_request(node):
     print("No monitoring-related indicators found.")
     return False
 
-
+"""""
 def check_api_limits_in_trees(tree):
     misuse_count = 0
     cloud_provider = detect_cloud_provider(tree)  # Ensure this function is defined
@@ -188,7 +188,87 @@ def check_api_limits_in_trees(tree):
         else:
             # Handle the case where module and its metric are not in `module_to_metric.items()`
             print(f"Misuse detected: '{module}' or its associated metric is not in `module_to_metric.items()`. This is flagged.")
-    misuse_count += 1
+            misuse_count += 1
+
+    print(f"There are {misuse_count} improper handling ML API limits misuses detected.")
+    return misuse_count
+
+"""""
+def check_api_limits_in_trees(tree):
+    misuse_count = 0
+    cloud_provider = detect_cloud_provider(tree)  # Ensure this function is defined
+
+    if cloud_provider == 'Azure':
+        module_to_metric = {
+            "azure.identity": "IdentityClient",
+            "azure.monitor.query": "MetricsQueryClient",
+            "requests": "requests"
+        }
+    elif cloud_provider == 'Google':
+        module_to_metric = {
+            "google.cloud": "monitoring_v3",
+            "google.auth": "MetricsQueryClient",
+            "requests": "requests"
+        }
+    elif cloud_provider == 'Aws':
+        module_to_metric = {
+            "boto3": ["cloudwatch.get_metric_data", "list_service_quotas"],
+            "requests": "requests"
+        }
+    else:
+        module_to_metric = {}
+
+    # Step 1: Check for import of monitoring libraries
+    checker = ImportChecker()
+    checker.visit(tree)
+    imported_modules = checker.imports
+
+    misuse_detected = False  # Variable to track if any misuse happens
+
+    # Step 2: Check if any relevant package is imported and if its metric is used
+    for module, metrics in module_to_metric.items():
+        if module in imported_modules:
+            print(f"Module '{module}' is imported. Checking usage...")
+
+            if isinstance(metrics, list):  # Handle multiple metrics for boto3
+                for metric in metrics:
+                    usage_checker = ImportUsageChecker(metric)
+                    usage_checker.visit(tree)
+                    if not usage_checker.is_used:
+                        print(f"Misuse detected: '{metric}' is NOT used despite being imported.")
+                        misuse_detected = True
+                        break  # Stop further checks if we already detected a misuse
+            else:
+                usage_checker = ImportUsageChecker(metrics)
+                usage_checker.visit(tree)
+                if not usage_checker.is_used:
+                    print(f"Misuse detected: '{metrics}' is NOT used despite being imported.")
+                    misuse_detected = True
+
+            # Special handling for the `requests` module
+            if module == "requests":
+                print("Module 'requests' is detected. Now verifying if it is used for monitoring ML service limits...")
+
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                        # Check if `requests` is being used and if it's for monitoring ML API limits
+                        func_value = node.func.value
+                        if isinstance(func_value, ast.Name) and func_value.id == "requests":
+                            if is_monitoring_request(node):
+                                print(f"No Misuse: 'requests' is used to monitor ML service limits.")
+                                break
+                else:
+                    print("Misuse detected: 'requests' is not used for monitoring ML service limits.")
+                    misuse_detected = True
+
+        else:
+            # Handle the case where module and its metric are not in `module_to_metric.items()`
+            print(f"Misuse detected: '{module}' or its associated metric is not in `module_to_metric.items()`. This is flagged.")
+            misuse_detected = True
+
+    # If any misuse has been detected, increment misuse_count by 1
+    if misuse_detected:
+        misuse_count += 1
 
     print(f"There are {misuse_count} improper handling ML API limits misuses detected.")
     return misuse_count
