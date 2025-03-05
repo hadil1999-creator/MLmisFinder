@@ -67,7 +67,7 @@ def remove_readonly(func, path, _):
 def delete_repo(repo_path):
     """Force delete the cloned repository, handling locked files."""
     try:
-        shutil.rmtree(repo_path, onexc=remove_readonly)  # Force remove
+        shutil.rmtree(repo_path)  # Force remove
         print(f"Deleted repository: {repo_path}")
     except Exception as e:
         print(f"Failed to delete {repo_path}: {e}")
