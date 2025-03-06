@@ -13,10 +13,8 @@ def process_repos(repo_paths, detection_function, save_to_excel=True, file_name=
     from detection_Not_using_batch_API import generate_combined_ast_for_repo
 
     all_repo_misuses = []
-    print(repo_paths)
     for repo_path in repo_paths:
         print(f"Processing repository: {repo_path}")
-        print(repo_path)
         tree = generate_ast_for_repo(repo_path)  # Generic AST generation
        
         if detection_function.__name__ == "detect_function_calls":

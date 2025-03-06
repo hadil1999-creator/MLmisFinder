@@ -8,7 +8,7 @@ from typing import Dict,List
 
 
 def generate_ast_for_file(file_path):
-    with open(file_path, "r") as source_file:
+    with open(file_path, "r",encoding="utf-8") as source_file:
         source_code = source_file.read()
         tree = ast.parse(source_code)
         return tree  # Return
