@@ -139,7 +139,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     os.makedirs(CLONE_DIR, exist_ok=True)  # Ensure repos folder exists
-    df = df.iloc[625:]  
+    df = df.iloc[1018:]  
 
     df = df.dropna(subset=["repo"])  
     for repo_url in df["repo"].dropna():
