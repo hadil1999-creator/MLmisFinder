@@ -248,10 +248,10 @@ def detect_batch(tree):
 
 def detect_function_calls(trees, combined_tree): 
     misuse_count, misuses = analyze_function_calls_in_repo(trees)
-    misuses1, additional_misuse_count = detect_batch(combined_tree)
+    #misuses1, additional_misuse_count = detect_batch(combined_tree)
 
-    total_misuse_count = misuse_count + additional_misuse_count
-    all_misuses = list(set(misuses).union(misuses1))
+    #total_misuse_count = misuse_count + additional_misuse_count
+    all_misuses = list(set(misuses))
     
 
     # Return the result as a dictionary
@@ -259,58 +259,10 @@ def detect_function_calls(trees, combined_tree):
         "total_misuse_count": total_misuse_count,
         "misuses": all_misuses
     }"""
-    return {"misuse_count_of_batch": total_misuse_count, "analysis_result": all_misuses}
+    return {"misuse_count_of_batch": misuse_count, "analysis_result": all_misuses}
 
 
 
 def detect(repo_path):
     from detection.output import process_repos
     return process_repos([repo_path], detect_function_calls, save_to_excel=True, file_name="misuses_report.xlsx")
-
-"""""
-repo_paths = [
-         "Python-Azure-AI-REST-APIs/",
-]
-
-
-# Initialize an empty list to collect all misuses and counts
-all_repo_misuses = []
-
-# Iterate over each repository
-for repo_path in repo_paths:
-    print(f"Processing repository: {repo_path}")
-    trees = generate_asts_for_repo(repo_path)
-    misuse_count, misuses = analyze_function_calls_in_repo(trees)
-    tree = generate_combined_ast_for_repo(repo_path)
-    misuses1, additional_misuse_count = detect(tree)
-
-     # Calculate the total misuse count
-    total_misuse_count = misuse_count + additional_misuse_count
-    # Store the results in the list
-    all_repo_misuses.append({
-        "repo_path": repo_path,
-        "total_misuse_count": total_misuse_count,
-        "misuses": list(set(misuses).union(misuses1))
-})
-
-print(f"Total misuse occurrences in the repository '{repo_path}' is {total_misuse_count}")
-
-
-# Optionally, convert the results to a DataFrame for easier analysis
-import pandas as pd
-
-misuses_df = pd.DataFrame(all_repo_misuses)
-
-# Print the DataFrame for verification
-print(misuses_df['misuses'])
-# Assuming misuses_df is your DataFrame
-import pandas as pd
-
-# Define the file path where you want to save the Excel file
-file_path = 'misuses_report.xlsx'
-
-# Save the DataFrame to an Excel file
-misuses_df.to_excel(file_path, index=False, sheet_name='Misuses_Report')
-
-print(f"Data saved to {file_path}")
-"""

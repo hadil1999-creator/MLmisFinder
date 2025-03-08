@@ -226,26 +226,3 @@ def detect_early_stopping(tree):
 
 def detect(repo_path):
     return process_repos([repo_path], detect_early_stopping)
-
-"""""
-repo_paths = [
-    "Python-Azure-AI-REST-APIs/"
-]
-
-# Initialize an empty list to collect all misuses and counts
-all_repo_misuses = []
-
-# Iterate over each repository
-for repo_path in repo_paths:
-    print(f"Processing repository: {repo_path}")
-    tree = generate_ast_for_repo(repo_path)
-    analyzer = EarlyStoppingAnalyzer(tree, detect_cloud_provider)
-    result = analyzer.analyze()
-    # Determine misuse or not
-    if result.get("imported") and result.get("used") and result.get("valid"):
-        print("not misuse")
-    else:
-        print("misuse")
-
-    print(result)
-"""""

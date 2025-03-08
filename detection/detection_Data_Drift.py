@@ -96,26 +96,3 @@ def detect_data_drift(tree):
 
 def detect(repo_path):
     return process_repos([repo_path], detect_data_drift)
-
-""""
-
-repo_paths = [
-    "Python-Azure-AI-REST-APIs/"
-]
-
-# Initialize an empty list to collect all misuses and counts
-all_repo_misuses = []
-
-# Iterate over each repository
-for repo_path in repo_paths:
-    print(f"Processing repository: {repo_path}")
-    tree = generate_ast_for_repo(repo_path)
-    misuse_count = check_data_drift(tree)
-
-    # Store the results in the list
-    all_repo_misuses.append({
-        "repo_path": repo_path,
-        "misuse_count": misuse_count
-
-})
-"""

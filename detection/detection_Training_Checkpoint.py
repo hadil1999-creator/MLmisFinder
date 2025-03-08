@@ -140,12 +140,7 @@ class CheckpointMisuseDetector:
 
         return results
 
-"""""
-def detect_checkpoint_misuse(tree):
-    detector = CheckpointMisuseDetector(tree)
-    report = detector.detect_misuse()
-    return {"misuse_report": report}
-"""""
+
 
 def detect_checkpoint_misuse(tree):
     detector = CheckpointMisuseDetector(tree)
@@ -162,17 +157,3 @@ def detect_checkpoint_misuse(tree):
 
 def detect(repo_path):
     return process_repos([repo_path], detect_checkpoint_misuse)
-"""
-repo_paths = [
-    "Python-Azure-AI-REST-APIs/"
-]
-
-# Iterate over each repository
-for repo_path in repo_paths:
-    print(f"Processing repository: {repo_path}")
-    tree = generate_ast_for_repo(repo_path)
-    detector = CheckpointMisuseDetector(tree)
-    report = detector.detect_misuse()
-    for result in report:
-      print(result)
-"""

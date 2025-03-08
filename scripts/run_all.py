@@ -139,7 +139,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     os.makedirs(CLONE_DIR, exist_ok=True)  # Ensure repos folder exists
-    df = df.iloc[1018:]  
+    df = df.iloc[1078:]  
 
     df = df.dropna(subset=["repo"])  
     for repo_url in df["repo"].dropna():
@@ -150,28 +150,3 @@ if __name__ == "__main__":
             delete_repo(repo_path)
 
 
-
-"""""
-def run_detections(repo_path):
-    Run all detection scripts on the given repo.
-    detection_files = [f for f in os.listdir(DETECTION_DIR) if f.startswith("detection_") and f.endswith(".py")]
-    total_detection_time = 0 
-    for file in detection_files:
-        module_name = file[:-3]  
-        detection_module = importlib.import_module(module_name)  
-
-        if hasattr(detection_module, "detect"):
-            print(f"Running {file} on {repo_path}...")
-            start_time = time.time()  # Start timing
-            try:
-                result = detection_module.detect(repo_path)
-                end_time = time.time()
-                execution_time = end_time - start_time  # Calculate execution time
-                total_detection_time += execution_time
-                print(f"{file} execution time: {execution_time:.4f} seconds")
-                print(result)
-            except Exception as e:
-                print(f"Error running {file} on {repo_path}: {e}")
-    print(f"Total execution time for all detection scripts on {repo_path}: {total_detection_time:.4f} seconds\n")
-    return total_detection_time  # Return total execution time for repo
-"""""
