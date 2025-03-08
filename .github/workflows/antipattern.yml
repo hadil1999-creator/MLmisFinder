@@ -10,6 +10,8 @@ on:
 jobs:
   run-detection:
     runs-on: ubuntu-latest
+    timeout-minutes: 120  # Increase timeout (e.g., 2 hours)
+
     steps:
       - name: Checkout This Repository
         uses: actions/checkout@v4
