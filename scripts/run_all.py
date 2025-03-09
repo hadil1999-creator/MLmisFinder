@@ -72,21 +72,38 @@ def delete_repo(repo_path):
     except Exception as e:
         print(f"Failed to delete {repo_path}: {e}")
 
-        
+  
+import os
+import pandas as pd
+
 def save_results_to_excel(results, file_name):
     """Save detection execution times and misuses to an Excel file."""
     df = pd.DataFrame(results)
 
-    try:
-        with pd.ExcelWriter(file_name, mode="a", engine="openpyxl", if_sheet_exists="overlay") as writer:
-            existing_df = pd.read_excel(file_name, sheet_name="Execution_Times")
-            combined_df = pd.concat([existing_df, df], ignore_index=True)
-            combined_df.to_excel(writer, index=False, sheet_name="Execution_Times")
-    except FileNotFoundError:
-        # If the file doesn't exist, create a new one
-        df.to_excel(file_name, index=False, sheet_name="Execution_Times")
+    # Ensure the directory is correct
+    file_name = os.path.join(os.getenv("GITHUB_WORKSPACE", "."), file_name)
 
-    print(f"Execution times saved to {file_name}")
+    try:
+        if os.path.exists(file_name):
+            # Try reading existing data
+            with pd.ExcelWriter(file_name, mode="a", engine="openpyxl", if_sheet_exists="overlay") as writer:
+                try:
+                    existing_df = pd.read_excel(file_name, sheet_name="Execution_Times")
+                    combined_df = pd.concat([existing_df, df], ignore_index=True)
+                except ValueError:
+                    # If sheet doesn't exist, write new DataFrame
+                    combined_df = df
+                
+                combined_df.to_excel(writer, index=False, sheet_name="Execution_Times")
+        else:
+            # Create new Excel file
+            df.to_excel(file_name, index=False, sheet_name="Execution_Times")
+
+        print(f"✅ Execution times saved to {file_name}")
+
+    except Exception as e:
+        print(f"❌ Error saving results: {e}")
+
 
 def run_detections(repo_path):
     """Run all detection scripts on the given repo and measure execution time."""
@@ -128,6 +145,10 @@ def run_detections(repo_path):
     
     # Save results to Excel
     save_results_to_excel(detection_results, "final_report.xlsx")
+    if os.path.exists("final_report.xlsx"):
+        print("✅ final_report.xlsx has been successfully created.")
+    else:
+        print("❌ final_report.xlsx was NOT created.")
 
     return total_detection_time
 
