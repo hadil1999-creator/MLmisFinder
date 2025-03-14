@@ -11,9 +11,7 @@
 
 ## 📥 Installation
 
-To get started with **MLmisFinder**, you need to install the package. You can install it using `pip`:
-``bash
-pip install -r requirements.txt
+To get started with **MLmisFinder**, you need to install the package. You can install it using `pip`: pip install -r requirements.txt
 
 
 ## 🧑‍💻 Usage
@@ -23,8 +21,7 @@ To use **MLmisFinder** with an Excel file containing GitHub URLs, follow these s
 - **Step 1**: Prepare an Excel file (`repos_data.xlsx`) with a column named `GitHub URL` that contains the URLs of the repositories you want to check.
 - **Step 2**: Upload the Excel file to your Python environment.
 - **Step 3**: Run **MLmisFinder** to process each GitHub URL in the file and detect potential misuses.
-``bash
-python scripts/run_all.py
+  python scripts/run_all.py
 - **Step 4**: Review the misuse reports generated for each URL.
 
 ### Example of the Excel file structure:
