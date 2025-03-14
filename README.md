@@ -12,9 +12,9 @@
 ## 📥 Installation
 
 To get started with **MLmisFinder**, you need to install the package. You can install it using `pip`:
-
-```bash
+``bash
 pip install -r requirements.txt
+
 
 ## 🧑‍💻 Usage
 
