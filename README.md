@@ -4,7 +4,7 @@
 
 ## 🚀 Features
 
-- **Comprehensive ML service Misuse Detection**: Automatically identifies common misuses in machine learning services such as incorrect API usage, missing or incorrect parameters, and more. ⚠️
+- **Comprehensive ML service Misuse Detection**: Automatically identifies common misuses in machine learning services-based systems such as None specification of early stopping criteria, Not using training checkpoint and more. ⚠️
 - **Easy Integration**: Seamlessly integrates with existing codebases, workflows, and cloud environments. 🌐
 - **Real-time Alerts**: Get immediate feedback on detected misuses to quickly address issues before they escalate. ⚡
 - **Reporting & Logs**: Generates detailed reports of misuse detection with clear explanations and suggested fixes. 📊
@@ -23,7 +23,7 @@ To use **MLmisFinder** with an Excel file containing GitHub URLs, follow these s
 - **Step 1**: Prepare an Excel file (`repos_data.xlsx`) with a column named `GitHub URL` that contains the URLs of the repositories you want to check.
 - **Step 2**: Upload the Excel file to your Python environment.
 - **Step 3**: Run **MLmisFinder** to process each GitHub URL in the file and detect potential misuses.
-```bash
+``bash
 python scripts/run_all.py
 - **Step 4**: Review the misuse reports generated for each URL.
 
