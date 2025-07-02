@@ -31,3 +31,10 @@ To use **MLmisFinder** with an Excel file containing GitHub URLs, follow these s
 | https://github.com/user/repo1      |
 | https://github.com/user/repo2      |
 | https://github.com/user/repo3      |
+
+## Reproducibility
+To reproduce the results reported in this study, please use the following commit:
+
+- Repository commit: `b74927b44b06c4d1ccc6f1e0603b0f576ddddadf`
+
+This ensures you are using the exact code version tested in our experiments.
