@@ -44,8 +44,9 @@ This ensures you are using the exact code version tested in our experiments.
 ## How to Cite
 If you use this package, please cite our paper:
 
-**Hadil Ben Amor**, Niruthiha Selvanayagam, Manel Abdellatif, Taher A. Ghaleb, and Naouel Moha.  
+Hadil Ben Amor, Niruthiha Selvanayagam, Manel Abdellatif, Taher A. Ghaleb, and Naouel Moha.  
 *MLmisFinder: A Specification and Detection Approach of Machine Learning Service Misuses.*  
 In **Proceedings of the IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER)**, 2026.
+
 
 
