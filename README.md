@@ -1,5 +1,7 @@
 # MLmisFinder 🕵️‍♂️🔍
 
+This repository contains the replication package for the paper "MLmisFinder: A Specification and Detection Approach of Machine Learning Service Misuses," accepted at the 33rd IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER) in December 2025. The package provides all resources needed to reproduce the experiments and results presented in the paper.
+
 **MLmisFinder** is a powerful tool designed to help you detect six misuses while using ML services. This tool scans your machine learning codebase, identifies common misuse patterns, and provides actionable insights to help ensure that best practices are followed. Whether you're working with model training, data processing, or deployment, **MLmisFinder** offers easy-to-use features to identify issues that might affect the accuracy and performance of your models.
 
 ## 🚀 Features
@@ -38,3 +40,4 @@ To reproduce the results reported in this study, please use the following commit
 - Repository commit: `b74927b44b06c4d1ccc6f1e0603b0f576ddddadf`
 
 This ensures you are using the exact code version tested in our experiments.
+
